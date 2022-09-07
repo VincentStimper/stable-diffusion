@@ -122,6 +122,11 @@ def main():
         help="do not save individual samples. For speed measurements.",
     )
     parser.add_argument(
+        "--nsfw_filter",
+        action='store_true',
+        help="nsfw images are filtered by safety checker model."
+    )
+    parser.add_argument(
         "--ddim_steps",
         type=int,
         default=50,
@@ -306,7 +311,10 @@ def main():
                         x_samples_ddim = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                         x_samples_ddim = x_samples_ddim.cpu().permute(0, 2, 3, 1).numpy()
 
-                        x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
+                        if opt.nsfw_filter:
+                            x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
+                        else:
+                            x_checked_image, has_nsfw_concept = (x_samples_ddim, None)
 
                         x_checked_image_torch = torch.from_numpy(x_checked_image).permute(0, 3, 1, 2)
 
