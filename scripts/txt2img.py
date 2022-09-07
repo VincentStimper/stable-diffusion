@@ -186,7 +186,7 @@ def main():
     parser.add_argument(
         "--n_samples",
         type=int,
-        default=6,
+        default=8,
         help="how many samples to produce for each given prompt. A.k.a. batch size",
     )
     parser.add_argument(
